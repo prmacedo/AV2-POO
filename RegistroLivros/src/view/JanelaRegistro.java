@@ -1,28 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import controller.Biblioteca;
 import controller.Livro;
-import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author aluno
- */
 public class JanelaRegistro extends javax.swing.JFrame {
-
-    /**
-     * Creates new form JanelaRegistro
-     */
-    
-    public void carregarTabela(){
-        Object Colunas[] = {"Título", "Editora", "Edição", "Área"};
-        DefaultTableModel modelo = new DefaultTableModel();
-    }
     
     public JanelaRegistro() {
         initComponents();
@@ -30,7 +11,80 @@ public class JanelaRegistro extends javax.swing.JFrame {
     }
 
     Biblioteca biblioteca = new Biblioteca();
-    private String modo;
+    private String modo = "Inicial";
+        
+    public void carregarTabela(){
+        tabela_livros.setModel(biblioteca.listarTodos());
+        if (tabela_livros.getColumnModel().getColumnCount() > 0) {
+            tabela_livros.getColumnModel().getColumn(0).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(300);
+            tabela_livros.getColumnModel().getColumn(1).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(2).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(75);
+            tabela_livros.getColumnModel().getColumn(3).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(150);
+        }
+    }
+    
+    public void limparCampos(){
+        cdt_titulo.setText("");
+        cdt_editora.setText("");
+        cdt_edicao.setText("");
+        cdt_area.setText("");
+    }
+    
+    public void habilitarBotao(){
+        switch (modo){
+            case "Inicial":
+                btn_novo.setEnabled(true);
+                btn_salvar.setEnabled(false);
+                btn_cancelar.setEnabled(false);
+                btn_excluir.setEnabled(false);
+                btn_editar.setEnabled(false);
+                cdt_titulo.setEnabled(false);
+                cdt_editora.setEnabled(false);
+                cdt_edicao.setEnabled(false);
+                cdt_area.setEnabled(false);
+            break;
+                
+            case "Novo":
+                btn_novo.setEnabled(false);
+                btn_salvar.setEnabled(true);
+                btn_cancelar.setEnabled(true);
+                btn_excluir.setEnabled(false);
+                btn_editar.setEnabled(false);
+                cdt_titulo.setEnabled(true);
+                cdt_editora.setEnabled(true);
+                cdt_edicao.setEnabled(true);
+                cdt_area.setEnabled(true);
+            break;
+            
+            case "Editar":
+                btn_novo.setEnabled(false);
+                btn_salvar.setEnabled(true);
+                btn_cancelar.setEnabled(true);
+                btn_excluir.setEnabled(false);
+                btn_editar.setEnabled(false);
+                cdt_titulo.setEnabled(true);
+                cdt_editora.setEnabled(true);
+                cdt_edicao.setEnabled(true);
+                cdt_area.setEnabled(true);
+            break;
+            
+            case "Clicado":
+                btn_novo.setEnabled(false);
+                btn_salvar.setEnabled(false);
+                btn_cancelar.setEnabled(true);
+                btn_excluir.setEnabled(true);
+                btn_editar.setEnabled(true);
+                cdt_titulo.setEnabled(false);
+                cdt_editora.setEnabled(false);
+                cdt_edicao.setEnabled(false);
+                cdt_area.setEnabled(false);
+            break;
+        }
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -134,6 +188,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
         });
 
         btn_salvar.setText("Salvar");
+        btn_salvar.setEnabled(false);
         btn_salvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_salvarActionPerformed(evt);
@@ -141,6 +196,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
         });
 
         btn_cancelar.setText("Cancelar");
+        btn_cancelar.setEnabled(false);
         btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelarActionPerformed(evt);
@@ -148,6 +204,12 @@ public class JanelaRegistro extends javax.swing.JFrame {
         });
 
         btn_excluir.setText("Excluir");
+        btn_excluir.setEnabled(false);
+        btn_excluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_excluirActionPerformed(evt);
+            }
+        });
 
         painel_lista.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Listagem", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
@@ -223,6 +285,12 @@ public class JanelaRegistro extends javax.swing.JFrame {
         );
 
         btn_editar.setText("Editar");
+        btn_editar.setEnabled(false);
+        btn_editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -275,46 +343,33 @@ public class JanelaRegistro extends javax.swing.JFrame {
     private void btn_novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_novoActionPerformed
         modo = "Novo";
         
-        cdt_titulo.setText("");
-        cdt_editora.setText("");
-        cdt_edicao.setText("");
-        cdt_area.setText("");
-        
-        cdt_titulo.setEnabled(true);
-        cdt_editora.setEnabled(true);
-        cdt_edicao.setEnabled(true);
-        cdt_area.setEnabled(true);
+        limparCampos();
+
+        habilitarBotao();
     }//GEN-LAST:event_btn_novoActionPerformed
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
-        cdt_titulo.setText("");
-        cdt_editora.setText("");
-        cdt_edicao.setText("");
-        cdt_area.setText("");
-        
-        cdt_titulo.setEnabled(false);
-        cdt_editora.setEnabled(false);
-        cdt_edicao.setEnabled(false);
-        cdt_area.setEnabled(false);
+        limparCampos();
+        modo = "Inicial";
+        habilitarBotao();
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvarActionPerformed
+        Livro livro = new Livro(cdt_titulo.getText(), cdt_editora.getText(), Integer.parseInt(cdt_edicao.getText()), cdt_area.getText());
         if(modo.equals("Novo")){
-            Livro livro = new Livro(cdt_titulo.getText(), cdt_editora.getText(), Integer.parseInt(cdt_edicao.getText()), cdt_area.getText());
             biblioteca.adicionar(livro);
-            biblioteca.listarTodos();
         } else if(modo.equals("Editar")){
-            
+            int index = tabela_livros.getSelectedRow();
+            biblioteca.editar(index, livro);
+            modo = "Inicial";
         }
-
-        cdt_titulo.setText("");
-        cdt_editora.setText("");
-        cdt_edicao.setText("");
-        cdt_area.setText("");
-        
+        habilitarBotao();
+        carregarTabela();
+        limparCampos();
     }//GEN-LAST:event_btn_salvarActionPerformed
 
     private void tabela_livrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_livrosMouseClicked
+        modo = "Clicado";
         int index = tabela_livros.getSelectedRow();
         if(index >= 0 && index < tabela_livros.getRowCount()){
             Livro livro = biblioteca.listaLivros.get(index);
@@ -323,7 +378,22 @@ public class JanelaRegistro extends javax.swing.JFrame {
             cdt_edicao.setText(String.valueOf(livro.getEdicao()));
             cdt_area.setText(livro.getArea());
         }
+        habilitarBotao();
     }//GEN-LAST:event_tabela_livrosMouseClicked
+
+    private void btn_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirActionPerformed
+        int index = tabela_livros.getSelectedRow();
+        biblioteca.remover(index);
+        modo = "Inicial";
+        carregarTabela();
+        limparCampos();
+        habilitarBotao();
+    }//GEN-LAST:event_btn_excluirActionPerformed
+
+    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
+        modo = "Editar";        
+        habilitarBotao();
+    }//GEN-LAST:event_btn_editarActionPerformed
 
     /**
      * @param args the command line arguments
