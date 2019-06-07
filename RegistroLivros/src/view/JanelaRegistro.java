@@ -2,12 +2,15 @@ package view;
 
 import controller.Biblioteca;
 import controller.Livro;
+import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 public class JanelaRegistro extends javax.swing.JFrame {
     
     public JanelaRegistro() {
         initComponents();
-        this.setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/books.png")));
     }
 
     Biblioteca biblioteca = new Biblioteca();
@@ -27,14 +30,29 @@ public class JanelaRegistro extends javax.swing.JFrame {
         }
     }
     
+    public void carregarBusca(String busca){
+        tabela_livros.setModel(biblioteca.listarEditora(busca));
+        if (tabela_livros.getColumnModel().getColumnCount() > 0) {
+            tabela_livros.getColumnModel().getColumn(0).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(300);
+            tabela_livros.getColumnModel().getColumn(1).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(2).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(75);
+            tabela_livros.getColumnModel().getColumn(3).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(150);
+        }
+    }
+    
     public void limparCampos(){
         cdt_titulo.setText("");
         cdt_editora.setText("");
         cdt_edicao.setText("");
         cdt_area.setText("");
+        txt_buscar.setText("");
     }
     
-    public void habilitarBotao(){
+    public void habilitarModo(){
         switch (modo){
             case "Inicial":
                 btn_novo.setEnabled(true);
@@ -110,12 +128,13 @@ public class JanelaRegistro extends javax.swing.JFrame {
         txt_buscar = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
         btn_editar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Controle de Livros");
         setResizable(false);
 
-        painel_cdt.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Cadastro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        painel_cdt.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Cadastro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         label_titulo.setText("Título:");
 
@@ -143,11 +162,11 @@ public class JanelaRegistro extends javax.swing.JFrame {
                     .addGroup(painel_cdtLayout.createSequentialGroup()
                         .addComponent(label_titulo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cdt_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cdt_titulo))
                     .addGroup(painel_cdtLayout.createSequentialGroup()
                         .addComponent(label_editora)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cdt_editora))
+                        .addComponent(cdt_editora, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
                     .addGroup(painel_cdtLayout.createSequentialGroup()
                         .addComponent(label_edicao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -156,7 +175,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
                         .addComponent(label_area)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cdt_area)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painel_cdtLayout.setVerticalGroup(
             painel_cdtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,6 +199,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btn_novo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/notebook.png"))); // NOI18N
         btn_novo.setText("Novo");
         btn_novo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,6 +207,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
             }
         });
 
+        btn_salvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn-salvar.png"))); // NOI18N
         btn_salvar.setText("Salvar");
         btn_salvar.setEnabled(false);
         btn_salvar.addActionListener(new java.awt.event.ActionListener() {
@@ -203,6 +224,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
             }
         });
 
+        btn_excluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn-excluir.png"))); // NOI18N
         btn_excluir.setText("Excluir");
         btn_excluir.setEnabled(false);
         btn_excluir.addActionListener(new java.awt.event.ActionListener() {
@@ -211,7 +233,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
             }
         });
 
-        painel_lista.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Listagem", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        painel_lista.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Listagem", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         tabela_livros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -236,6 +258,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabela_livros.getTableHeader().setResizingAllowed(false);
         tabela_livros.getTableHeader().setReorderingAllowed(false);
         tabela_livros.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -249,27 +272,43 @@ public class JanelaRegistro extends javax.swing.JFrame {
             tabela_livros.getColumnModel().getColumn(1).setResizable(false);
             tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(150);
             tabela_livros.getColumnModel().getColumn(2).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(75);
+            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(80);
             tabela_livros.getColumnModel().getColumn(3).setResizable(false);
             tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(150);
         }
 
         label_buscar.setText("Buscar editora:");
 
+        txt_buscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_buscarMouseClicked(evt);
+            }
+        });
+
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/book.png"))); // NOI18N
         btn_buscar.setText("Buscar");
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painel_listaLayout = new javax.swing.GroupLayout(painel_lista);
         painel_lista.setLayout(painel_listaLayout);
         painel_listaLayout.setHorizontalGroup(
             painel_listaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
             .addGroup(painel_listaLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(label_buscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_buscar)
+                .addGroup(painel_listaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painel_listaLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(label_buscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_buscar))
+                    .addGroup(painel_listaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painel_listaLayout.setVerticalGroup(
@@ -281,9 +320,11 @@ public class JanelaRegistro extends javax.swing.JFrame {
                     .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_buscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
+        btn_editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit.png"))); // NOI18N
         btn_editar.setText("Editar");
         btn_editar.setEnabled(false);
         btn_editar.addActionListener(new java.awt.event.ActionListener() {
@@ -292,47 +333,65 @@ public class JanelaRegistro extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/books.png"))); // NOI18N
+        jLabel1.setText("Sistema de Controle de Livros");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(painel_lista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(painel_cdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btn_novo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_excluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 107, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(painel_cdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(btn_novo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btn_excluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btn_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(63, 63, 63)
+                                        .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(139, 139, 139)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 10, Short.MAX_VALUE)
+                        .addComponent(painel_lista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(14, 14, 14)
                         .addComponent(painel_cdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btn_novo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_excluir, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btn_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_excluir, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(painel_lista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -341,31 +400,48 @@ public class JanelaRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_novoActionPerformed
-        modo = "Novo";
-        
+        modo = "Novo";  
         limparCampos();
-
-        habilitarBotao();
+        habilitarModo();
+        carregarTabela();
     }//GEN-LAST:event_btn_novoActionPerformed
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         limparCampos();
         modo = "Inicial";
-        habilitarBotao();
+        habilitarModo();
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvarActionPerformed
-        Livro livro = new Livro(cdt_titulo.getText(), cdt_editora.getText(), Integer.parseInt(cdt_edicao.getText()), cdt_area.getText());
-        if(modo.equals("Novo")){
-            biblioteca.adicionar(livro);
-        } else if(modo.equals("Editar")){
-            int index = tabela_livros.getSelectedRow();
-            biblioteca.editar(index, livro);
-            modo = "Inicial";
+        boolean foiSalvo = false;
+        try {
+            if (cdt_titulo.getText().isEmpty() || cdt_editora.getText().isEmpty() || 
+                cdt_edicao.getText().isEmpty() || cdt_area.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Preencha todos os campos", "ERRO", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Livro livro = new Livro(cdt_titulo.getText(), cdt_editora.getText(), Integer.parseInt(cdt_edicao.getText()), cdt_area.getText());
+                if(modo.equals("Novo")){
+                    biblioteca.adicionar(livro);
+                    foiSalvo = true;
+                } else if(modo.equals("Editar")){
+                    int index = tabela_livros.getSelectedRow();
+                    biblioteca.editar(index, livro);
+                    modo = "Inicial";
+                    foiSalvo = true;
+                }
+            }
+        } catch (NumberFormatException e) {
+            if(!cdt_edicao.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "A edição deve ter valor numérico", "ERRO", JOptionPane.INFORMATION_MESSAGE);
+                cdt_edicao.setText("");
+            }
+        } finally {
+            if(foiSalvo){
+                limparCampos();
+            }
         }
-        habilitarBotao();
+        habilitarModo();
         carregarTabela();
-        limparCampos();
     }//GEN-LAST:event_btn_salvarActionPerformed
 
     private void tabela_livrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_livrosMouseClicked
@@ -378,7 +454,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
             cdt_edicao.setText(String.valueOf(livro.getEdicao()));
             cdt_area.setText(livro.getArea());
         }
-        habilitarBotao();
+        habilitarModo();
     }//GEN-LAST:event_tabela_livrosMouseClicked
 
     private void btn_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirActionPerformed
@@ -387,17 +463,24 @@ public class JanelaRegistro extends javax.swing.JFrame {
         modo = "Inicial";
         carregarTabela();
         limparCampos();
-        habilitarBotao();
+        habilitarModo();
     }//GEN-LAST:event_btn_excluirActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
         modo = "Editar";        
-        habilitarBotao();
+        habilitarModo();
     }//GEN-LAST:event_btn_editarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        String busca = txt_buscar.getText();
+        carregarBusca(busca);
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
+    private void txt_buscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_buscarMouseClicked
+        modo = "Inicial";
+        habilitarModo();
+    }//GEN-LAST:event_txt_buscarMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -441,6 +524,7 @@ public class JanelaRegistro extends javax.swing.JFrame {
     private javax.swing.JTextField cdt_edicao;
     private javax.swing.JTextField cdt_editora;
     private javax.swing.JTextField cdt_titulo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label_area;
     private javax.swing.JLabel label_buscar;
