@@ -471,9 +471,12 @@ public class JanelaRegistro extends javax.swing.JFrame {
         modo = "Clicado";
         int codigo = Integer.parseInt(tabela_livros.getModel().getValueAt(tabela_livros.getSelectedRow(), 0).toString());
         int index = codigo - 1;
+        System.out.println(tabela_livros.getRowCount());
+        int ultimoIndice = Integer.parseInt(tabela_livros.getModel().getValueAt(tabela_livros.getRowCount()-1, 0).toString());
         indiceEditar = index;
-//        System.out.println(index);
-        if(index >= 0 && index < tabela_livros.getRowCount()){
+        System.out.println(ultimoIndice);
+        System.out.println(index);
+        if(index >= 0 && index < ultimoIndice){
             Livro livro = biblioteca.listaLivros.get(index);
             cdt_titulo.setText(livro.getTitulo());
             cdt_editora.setText(livro.getEditora());
