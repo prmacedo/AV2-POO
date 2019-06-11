@@ -23,10 +23,11 @@ public class Biblioteca {
     }
     
     public DefaultTableModel listarTodos(){
-        Object Colunas[] = {"Título", "Editora", "Edição", "Área"};
+        Object Colunas[] = {"Cod.","Título", "Editora", "Edição", "Área"};
         DefaultTableModel modelo = new DefaultTableModel(Colunas,0);
         for (int i = 0; i < listaLivros.size(); i++) {
-            Object livro[] = new Object[] {listaLivros.get(i).getTitulo(),
+            Object livro[] = new Object[] {(i+1),
+                                           listaLivros.get(i).getTitulo(),
                                            listaLivros.get(i).getEditora(),
                                            listaLivros.get(i).getEdicao(),
                                            listaLivros.get(i).getArea()};
@@ -36,11 +37,12 @@ public class Biblioteca {
     }
     
     public DefaultTableModel listarEditora(String busca){
-        Object Colunas[] = {"Título", "Editora", "Edição", "Área"};
+        Object Colunas[] = {"Cod.","Título", "Editora", "Edição", "Área"};
         DefaultTableModel modelo = new DefaultTableModel(Colunas,0);
         for (int i = 0; i < listaLivros.size(); i++) {
             if(listaLivros.get(i).getEditora().equalsIgnoreCase(busca)){
-                Object livro[] = new Object[] {listaLivros.get(i).getTitulo(),
+                Object livro[] = new Object[] {(i+1),
+                                               listaLivros.get(i).getTitulo(),
                                                listaLivros.get(i).getEditora(),
                                                listaLivros.get(i).getEdicao(),
                                                listaLivros.get(i).getArea()};

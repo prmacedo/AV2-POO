@@ -15,18 +15,21 @@ public class JanelaRegistro extends javax.swing.JFrame {
 
     Biblioteca biblioteca = new Biblioteca();
     private String modo = "Inicial";
+    private int indiceEditar = 0;
         
     public void carregarTabela(){
         tabela_livros.setModel(biblioteca.listarTodos());
         if (tabela_livros.getColumnModel().getColumnCount() > 0) {
             tabela_livros.getColumnModel().getColumn(0).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(300);
+            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(50);
             tabela_livros.getColumnModel().getColumn(1).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(300);
             tabela_livros.getColumnModel().getColumn(2).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(75);
+            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(150);
             tabela_livros.getColumnModel().getColumn(3).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tabela_livros.getColumnModel().getColumn(4).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(4).setPreferredWidth(150);
         }
     }
     
@@ -34,13 +37,15 @@ public class JanelaRegistro extends javax.swing.JFrame {
         tabela_livros.setModel(biblioteca.listarEditora(busca));
         if (tabela_livros.getColumnModel().getColumnCount() > 0) {
             tabela_livros.getColumnModel().getColumn(0).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(300);
+            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(50);
             tabela_livros.getColumnModel().getColumn(1).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(300);
             tabela_livros.getColumnModel().getColumn(2).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(75);
+            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(150);
             tabela_livros.getColumnModel().getColumn(3).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tabela_livros.getColumnModel().getColumn(4).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(4).setPreferredWidth(150);
         }
     }
     
@@ -91,11 +96,23 @@ public class JanelaRegistro extends javax.swing.JFrame {
             break;
             
             case "Clicado":
-                btn_novo.setEnabled(false);
+                btn_novo.setEnabled(true);
                 btn_salvar.setEnabled(false);
                 btn_cancelar.setEnabled(true);
                 btn_excluir.setEnabled(true);
                 btn_editar.setEnabled(true);
+                cdt_titulo.setEnabled(false);
+                cdt_editora.setEnabled(false);
+                cdt_edicao.setEnabled(false);
+                cdt_area.setEnabled(false);
+            break;
+            
+            case "Buscar":
+                btn_novo.setEnabled(true);
+                btn_salvar.setEnabled(false);
+                btn_cancelar.setEnabled(true);
+                btn_excluir.setEnabled(false);
+                btn_editar.setEnabled(false);
                 cdt_titulo.setEnabled(false);
                 cdt_editora.setEnabled(false);
                 cdt_edicao.setEnabled(false);
@@ -240,14 +257,14 @@ public class JanelaRegistro extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Título", "Editora", "Edição", "Área"
+                "Cod.", "Título", "Editora", "Edição", "Área"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -268,13 +285,15 @@ public class JanelaRegistro extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tabela_livros);
         if (tabela_livros.getColumnModel().getColumnCount() > 0) {
             tabela_livros.getColumnModel().getColumn(0).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(300);
+            tabela_livros.getColumnModel().getColumn(0).setPreferredWidth(50);
             tabela_livros.getColumnModel().getColumn(1).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(1).setPreferredWidth(300);
             tabela_livros.getColumnModel().getColumn(2).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(80);
+            tabela_livros.getColumnModel().getColumn(2).setPreferredWidth(150);
             tabela_livros.getColumnModel().getColumn(3).setResizable(false);
-            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tabela_livros.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tabela_livros.getColumnModel().getColumn(4).setResizable(false);
+            tabela_livros.getColumnModel().getColumn(4).setPreferredWidth(150);
         }
 
         label_buscar.setText("Buscar editora:");
@@ -408,6 +427,9 @@ public class JanelaRegistro extends javax.swing.JFrame {
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         limparCampos();
+        if(modo.equals("Clicado") || modo.equals("Buscar")){
+            carregarTabela();
+        }
         modo = "Inicial";
         habilitarModo();
     }//GEN-LAST:event_btn_cancelarActionPerformed
@@ -424,8 +446,9 @@ public class JanelaRegistro extends javax.swing.JFrame {
                     biblioteca.adicionar(livro);
                     foiSalvo = true;
                 } else if(modo.equals("Editar")){
-                    int index = tabela_livros.getSelectedRow();
-                    biblioteca.editar(index, livro);
+//                    int index = tabela_livros.getSelectedRow();
+//                    System.out.println(indiceEditar);
+                    biblioteca.editar(indiceEditar, livro);
                     modo = "Inicial";
                     foiSalvo = true;
                 }
@@ -446,7 +469,10 @@ public class JanelaRegistro extends javax.swing.JFrame {
 
     private void tabela_livrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_livrosMouseClicked
         modo = "Clicado";
-        int index = tabela_livros.getSelectedRow();
+        int codigo = Integer.parseInt(tabela_livros.getModel().getValueAt(tabela_livros.getSelectedRow(), 0).toString());
+        int index = codigo - 1;
+        indiceEditar = index;
+//        System.out.println(index);
         if(index >= 0 && index < tabela_livros.getRowCount()){
             Livro livro = biblioteca.listaLivros.get(index);
             cdt_titulo.setText(livro.getTitulo());
@@ -455,11 +481,16 @@ public class JanelaRegistro extends javax.swing.JFrame {
             cdt_area.setText(livro.getArea());
         }
         habilitarModo();
+        String busca = txt_buscar.getText();
+        if(!busca.isEmpty() || !busca.equals("")){
+            carregarBusca(busca);
+        }
+        modo = "Buscar";
     }//GEN-LAST:event_tabela_livrosMouseClicked
 
     private void btn_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirActionPerformed
-        int index = tabela_livros.getSelectedRow();
-        biblioteca.remover(index);
+//        int index = tabela_livros.getSelectedRow();
+        biblioteca.remover(indiceEditar);
         modo = "Inicial";
         carregarTabela();
         limparCampos();
@@ -473,11 +504,15 @@ public class JanelaRegistro extends javax.swing.JFrame {
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
         String busca = txt_buscar.getText();
+        if(busca.isEmpty() || busca.equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha o campo de busca", "Busca", JOptionPane.CANCEL_OPTION);
+            carregarTabela();
+        }
         carregarBusca(busca);
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void txt_buscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_buscarMouseClicked
-        modo = "Inicial";
+        modo = "Buscar";
         habilitarModo();
     }//GEN-LAST:event_txt_buscarMouseClicked
 
